@@ -29,6 +29,45 @@
                     <p class="amount">2 500,00 PLN</p>
                 </div>
             </section>
+
+            <div class="content-grid">
+                <section class="form-section">
+                    <h2>Dodaj transakcję</h2>
+                    <form action="#" method="POST" class="transaction-form">
+                        <div class="form-group">
+                            <label for="type">Typ</label>
+                            <select id="type" name="type" required>
+                                <option value="expense">Wydatek</option>
+                                <option value="income">Przychód</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Nazwa</label>
+                            <input type="text" id="name" name="name" placeholder="np. Zakupy spożywcze" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Kwota (PLN)</label>
+                            <input type="number" id="amount" name="amount" step="0.01" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Kategoria</label>
+                            <select id="category" name="category" required>
+                                <option value="food">Jedzenie</option>
+                                <option value="transport">Transport</option>
+                                <option value="housing">Mieszkanie</option>
+                                <option value="entertainment">Rozrywka</option>
+                                <option value="salary">Wynagrodzenie</option>
+                                <option value="other">Inne</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Data</label>
+                            <input type="date" id="date" name="date" required value="2026-04-20">
+                        </div>
+                        <button type="submit" class="btn-submit">Dodaj transakcję</button>
+                    </form>
+                </section>
+            </div>
         </main>
     </div>
     <script src="js/script.js"></script>
