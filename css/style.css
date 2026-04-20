@@ -92,3 +92,22 @@ body {
 .summary-card.balance .amount { color: var(--primary-color); }
 .summary-card.incomes .amount { color: var(--success-color); }
 .summary-card.expenses .amount { color: var(--danger-color); }
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
