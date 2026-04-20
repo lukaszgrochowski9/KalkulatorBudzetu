@@ -67,6 +67,38 @@
                         <button type="submit" class="btn-submit">Dodaj transakcję</button>
                     </form>
                 </section>
+                <section class="list-section">
+                    <h2>Ostatnie transakcje</h2>
+                    <div class="transactions-list">
+                        <div class="transaction-item expense">
+                            <div class="transaction-info">
+                                <h4>Zakupy w supermarkecie</h4>
+                                <span>Jedzenie • 20 Kwietnia 2026</span>
+                            </div>
+                            <div class="transaction-amount">
+                                -150,00 PLN
+                            </div>
+                        </div>
+                        <div class="transaction-item income">
+                            <div class="transaction-info">
+                                <h4>Wypłata</h4>
+                                <span>Wynagrodzenie • 10 Kwietnia 2026</span>
+                            </div>
+                            <div class="transaction-amount">
+                                +7 000,00 PLN
+                            </div>
+                        </div>
+                        <div class="transaction-item expense">
+                            <div class="transaction-info">
+                                <h4>Paliwo</h4>
+                                <span>Transport • 5 Kwietnia 2026</span>
+                            </div>
+                            <div class="transaction-amount">
+                                -250,00 PLN
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
