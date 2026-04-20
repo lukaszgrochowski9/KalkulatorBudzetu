@@ -52,3 +52,43 @@ body {
     color: var(--text-muted);
     font-size: 1.1rem;
 }
+
+.summary-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.summary-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.summary-card h3 {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.summary-card .amount {
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.summary-card.balance .amount { color: var(--primary-color); }
+.summary-card.incomes .amount { color: var(--success-color); }
+.summary-card.expenses .amount { color: var(--danger-color); }
