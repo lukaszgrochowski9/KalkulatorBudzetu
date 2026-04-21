@@ -174,3 +174,55 @@ section h2 {
 .btn-submit:active {
     transform: scale(0.98);
 }
+
+.list-section {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s ease;
+}
+
+.transaction-item:hover {
+    background-color: #f9fafb;
+}
+
+.transaction-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
+
+.transaction-info span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.transaction-amount {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.transaction-item.income .transaction-amount {
+    color: var(--success-color);
+}
+
+.transaction-item.expense .transaction-amount {
+    color: var(--danger-color);
+}
