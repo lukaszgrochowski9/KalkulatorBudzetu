@@ -10,7 +10,7 @@ const incomesDisplay = document.querySelector('.incomes .amount');
 const expensesDisplay = document.querySelector('.expenses .amount');
 const transactionsList = document.querySelector('.transactions-list');
 
-let transactions = [];
+let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
 const categoryMap = {
     food: "Jedzenie",
@@ -47,6 +47,11 @@ function updateSummary() {
     }
 }
 
+function deleteTransaction(id) {
+    transactions = transactions.filter(t => t.id !== id);
+    updateUI();
+}
+
 function updateUI() {
     transactionsList.innerHTML = '';
 
@@ -64,8 +69,11 @@ function updateUI() {
                 <h4>${transaction.name}</h4>
                 <span>${categoryMap[transaction.category]} • ${dateStr}</span>
             </div>
-            <div class="transaction-amount">
-                ${sign}${amountStr}
+            <div class="transaction-actions">
+                <div class="transaction-amount">
+                    ${sign}${amountStr}
+                </div>
+                <button class="btn-delete" onclick="deleteTransaction('${transaction.id}')">&times;</button>
             </div>
         `;
 
@@ -73,6 +81,7 @@ function updateUI() {
     });
 
     updateSummary();
+    localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
 form.addEventListener('submit', function(e) {
