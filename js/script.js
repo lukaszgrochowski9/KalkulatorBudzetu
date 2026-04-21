@@ -71,7 +71,7 @@ function updateChart() {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'bottom',
+                    position: 'right',
                     labels: { font: { family: "'Inter', sans-serif" }, color: textColor }
                 }
             }

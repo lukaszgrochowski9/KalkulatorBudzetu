@@ -70,15 +70,10 @@
                         <button type="submit" class="btn-submit">Dodaj transakcję</button>
                     </form>
                 </section>
-                <section class="chart-section">
-                    <h2>Wydatki wg kategorii</h2>
-                    <div class="chart-container">
-                        <canvas id="expensesChart"></canvas>
-                    </div>
-                </section>
                 </div>
-                <section class="list-section">
-                    <div class="list-header">
+                <div class="right-column" style="display: flex; flex-direction: column; gap: 2rem;">
+                    <section class="list-section">
+                        <div class="list-header">
                         <h2>Ostatnie transakcje</h2>
                         <div class="filters">
                             <button class="filter-btn active" data-filter="all">Wszystkie</button>
@@ -116,6 +111,13 @@
                         </div>
                     </div>
                 </section>
+                <section class="chart-section">
+                    <h2>Wydatki wg kategorii</h2>
+                    <div class="chart-container">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                </section>
+                </div>
             </div>
         </main>
     </div>
