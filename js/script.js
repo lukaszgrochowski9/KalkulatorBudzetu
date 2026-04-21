@@ -14,4 +14,16 @@ let transactions = [];
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
+
+    const transaction = {
+        id: crypto.randomUUID(),
+        type: typeInput.value,
+        name: nameInput.value,
+        amount: parseFloat(amountInput.value),
+        category: categoryInput.value,
+        date: dateInput.value
+    };
+
+    transactions.push(transaction);
+    form.reset();
 });
