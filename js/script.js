@@ -16,6 +16,47 @@ let chartInstance = null;
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let currentFilter = 'all';
 
+// Month navigation state
+const now = new Date();
+let currentMonth = now.getMonth();   // 0-11
+let currentYear  = now.getFullYear();
+
+const prevMonthBtn = document.getElementById('prev-month');
+const nextMonthBtn = document.getElementById('next-month');
+const currentMonthDisplay = document.getElementById('current-month-display');
+
+function getMonthLabel(year, month) {
+    return new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(year, month, 1));
+}
+
+function updateMonthDisplay() {
+    currentMonthDisplay.textContent = getMonthLabel(currentYear, currentMonth)
+        .replace(/^./, c => c.toUpperCase());
+}
+
+function getFilteredByMonth(list) {
+    return list.filter(t => {
+        const d = new Date(t.date);
+        return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+    });
+}
+
+prevMonthBtn.addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+    updateMonthDisplay();
+    updateUI();
+});
+
+nextMonthBtn.addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    updateMonthDisplay();
+    updateUI();
+});
+
+updateMonthDisplay();
+
 const customCategoryGroup = document.querySelector('#custom-category-group');
 const customCategoryInput = document.querySelector('#custom-category');
 
@@ -29,9 +70,11 @@ let categoryMap = JSON.parse(localStorage.getItem('categoryMap')) || {
     transport: "Transport",
     housing: "Mieszkanie",
     entertainment: "Rozrywka",
-    salary: "Wynagrodzenie",
-    other: "Inne"
+    salary: "Wynagrodzenie"
 };
+
+delete categoryMap.other;
+localStorage.setItem('categoryMap', JSON.stringify(categoryMap));
 
 function populateCategories() {
     categoryInput.innerHTML = '';
@@ -73,7 +116,8 @@ function generateColors(count) {
 function updateChart() {
     if (!ctx) return;
     
-    const expenses = transactions.filter(t => t.type === 'expense');
+    const monthTransactions = getFilteredByMonth(transactions);
+    const expenses = monthTransactions.filter(t => t.type === 'expense');
     
     const dataByCategory = {};
     expenses.forEach(t => {
@@ -118,11 +162,13 @@ function updateChart() {
 }
 
 function updateSummary() {
-    const incomes = transactions
+    const monthTransactions = getFilteredByMonth(transactions);
+
+    const incomes = monthTransactions
         .filter(t => t.type === 'income')
         .reduce((acc, t) => acc + t.amount, 0);
 
-    const expenses = transactions
+    const expenses = monthTransactions
         .filter(t => t.type === 'expense')
         .reduce((acc, t) => acc + t.amount, 0);
 
@@ -151,13 +197,15 @@ function deleteTransaction(id) {
 function updateUI() {
     transactionsList.innerHTML = '';
 
-    let filteredTransactions = transactions;
+    const monthTransactions = getFilteredByMonth(transactions);
+
+    let filteredTransactions = monthTransactions;
     if (currentFilter !== 'all') {
-        filteredTransactions = transactions.filter(t => t.type === currentFilter);
+        filteredTransactions = monthTransactions.filter(t => t.type === currentFilter);
     }
 
-    if (transactions.length === 0) {
-        transactionsList.innerHTML = '<p class="empty-state">Brak transakcji. Dodaj pierwszą transakcję powyżej.</p>';
+    if (monthTransactions.length === 0) {
+        transactionsList.innerHTML = '<p class="empty-state">Brak transakcji w tym miesiącu.</p>';
     } else if (filteredTransactions.length === 0) {
         transactionsList.innerHTML = '<p class="empty-state">Brak transakcji dla wybranego filtru.</p>';
     } else {

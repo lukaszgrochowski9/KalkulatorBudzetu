@@ -17,6 +17,12 @@
         </header>
 
         <main class="app-main">
+            <div class="month-selector">
+                <button id="prev-month" class="month-btn">◄</button>
+                <h2 id="current-month-display">Kwiecień 2026</h2>
+                <button id="next-month" class="month-btn">►</button>
+            </div>
+
             <section class="summary-section">
                 <div class="summary-card balance">
                     <h3>Aktualne Saldo</h3>
