@@ -16,12 +16,15 @@ let chartInstance = null;
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let currentFilter = 'all';
 
+const customCategoryGroup = document.querySelector('#custom-category-group');
+const customCategoryInput = document.querySelector('#custom-category');
+
 function setDefaultDate() {
     const today = new Date().toISOString().split('T')[0];
     dateInput.value = today;
 }
 
-const categoryMap = {
+let categoryMap = JSON.parse(localStorage.getItem('categoryMap')) || {
     food: "Jedzenie",
     transport: "Transport",
     housing: "Mieszkanie",
@@ -29,6 +32,43 @@ const categoryMap = {
     salary: "Wynagrodzenie",
     other: "Inne"
 };
+
+function populateCategories() {
+    categoryInput.innerHTML = '';
+    for (const [key, value] of Object.entries(categoryMap)) {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = value;
+        categoryInput.appendChild(option);
+    }
+    const customOption = document.createElement('option');
+    customOption.value = 'custom';
+    customOption.textContent = '+ Dodaj własną...';
+    customOption.style.fontWeight = 'bold';
+    categoryInput.appendChild(customOption);
+}
+
+populateCategories();
+
+categoryInput.addEventListener('change', (e) => {
+    if (e.target.value === 'custom') {
+        customCategoryGroup.style.display = 'flex';
+        customCategoryInput.required = true;
+    } else {
+        customCategoryGroup.style.display = 'none';
+        customCategoryInput.required = false;
+    }
+});
+
+function generateColors(count) {
+    const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#a3e635', '#fb923c', '#2dd4bf', '#818cf8', '#e879f9', '#facc15', '#4ade80', '#38bdf8', '#c084fc'];
+    if (count <= colors.length) return colors.slice(0, count);
+    const result = [...colors];
+    for (let i = colors.length; i < count; i++) {
+        result.push(`hsl(${(i * 137.5) % 360}, 70%, 60%)`);
+    }
+    return result;
+}
 
 function updateChart() {
     if (!ctx) return;
@@ -60,9 +100,7 @@ function updateChart() {
             labels: labels,
             datasets: [{
                 data: data,
-                backgroundColor: [
-                    '#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#a3e635'
-                ],
+                backgroundColor: generateColors(data.length),
                 borderWidth: 0
             }]
         },
@@ -158,18 +196,32 @@ function updateUI() {
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
+    let finalCategory = categoryInput.value;
+    
+    if (finalCategory === 'custom') {
+        const newCatName = customCategoryInput.value.trim();
+        if (!newCatName) return;
+        
+        finalCategory = 'cat_' + Date.now();
+        categoryMap[finalCategory] = newCatName;
+        localStorage.setItem('categoryMap', JSON.stringify(categoryMap));
+        populateCategories();
+    }
+
     const transaction = {
         id: crypto.randomUUID(),
         type: typeInput.value,
         name: nameInput.value,
         amount: parseFloat(amountInput.value),
-        category: categoryInput.value,
+        category: finalCategory,
         date: dateInput.value
     };
 
     transactions.push(transaction);
     form.reset();
     setDefaultDate();
+    customCategoryGroup.style.display = 'none';
+    customCategoryInput.required = false;
     updateUI();
 });
 

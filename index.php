@@ -55,13 +55,11 @@
                         <div class="form-group">
                             <label for="category">Kategoria</label>
                             <select id="category" name="category" required>
-                                <option value="food">Jedzenie</option>
-                                <option value="transport">Transport</option>
-                                <option value="housing">Mieszkanie</option>
-                                <option value="entertainment">Rozrywka</option>
-                                <option value="salary">Wynagrodzenie</option>
-                                <option value="other">Inne</option>
                             </select>
+                        </div>
+                        <div class="form-group" id="custom-category-group" style="display: none;">
+                            <label for="custom-category">Nazwa własnej kategorii</label>
+                            <input type="text" id="custom-category" name="custom-category" placeholder="Wpisz nazwę">
                         </div>
                         <div class="form-group">
                             <label for="date">Data</label>
