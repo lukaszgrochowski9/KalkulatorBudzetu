@@ -298,3 +298,22 @@ section h2 {
     color: var(--primary-color);
     box-shadow: var(--shadow-sm);
 }
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-section {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-top: 2rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}

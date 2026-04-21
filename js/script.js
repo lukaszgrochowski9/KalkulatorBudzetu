@@ -10,6 +10,8 @@ const incomesDisplay = document.querySelector('.incomes .amount');
 const expensesDisplay = document.querySelector('.expenses .amount');
 const transactionsList = document.querySelector('.transactions-list');
 const filterBtns = document.querySelectorAll('.filter-btn');
+const ctx = document.getElementById('expensesChart');
+let chartInstance = null;
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let currentFilter = 'all';
@@ -27,6 +29,53 @@ const categoryMap = {
     salary: "Wynagrodzenie",
     other: "Inne"
 };
+
+function updateChart() {
+    if (!ctx) return;
+    
+    const expenses = transactions.filter(t => t.type === 'expense');
+    
+    const dataByCategory = {};
+    expenses.forEach(t => {
+        const catName = categoryMap[t.category];
+        dataByCategory[catName] = (dataByCategory[catName] || 0) + t.amount;
+    });
+    
+    const labels = Object.keys(dataByCategory);
+    const data = Object.values(dataByCategory);
+    
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+    
+    if (expenses.length === 0) {
+        return;
+    }
+    
+    chartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#a3e635'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { family: "'Inter', sans-serif" }, color: '#6b7280' }
+                }
+            }
+        }
+    });
+}
 
 function updateSummary() {
     const incomes = transactions
@@ -100,6 +149,7 @@ function updateUI() {
     }
 
     updateSummary();
+    updateChart();
     localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 

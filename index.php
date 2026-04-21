@@ -6,6 +6,7 @@
     <title>Kalkulator Budżetu Domowego</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -31,8 +32,9 @@
             </section>
 
             <div class="content-grid">
-                <section class="form-section">
-                    <h2>Dodaj transakcję</h2>
+                <div class="left-column">
+                    <section class="form-section">
+                        <h2>Dodaj transakcję</h2>
                     <form action="#" method="POST" class="transaction-form">
                         <div class="form-group">
                             <label for="type">Typ</label>
@@ -67,6 +69,13 @@
                         <button type="submit" class="btn-submit">Dodaj transakcję</button>
                     </form>
                 </section>
+                <section class="chart-section">
+                    <h2>Wydatki wg kategorii</h2>
+                    <div class="chart-container">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                </section>
+                </div>
                 <section class="list-section">
                     <div class="list-header">
                         <h2>Ostatnie transakcje</h2>
