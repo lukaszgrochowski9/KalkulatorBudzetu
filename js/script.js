@@ -58,7 +58,8 @@ function updateUI() {
     if (transactions.length === 0) {
         transactionsList.innerHTML = '<p class="empty-state">Brak transakcji. Dodaj pierwszą transakcję powyżej.</p>';
     } else {
-        transactions.forEach(transaction => {
+        const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedTransactions.forEach(transaction => {
         const sign = transaction.type === 'expense' ? '-' : '+';
         const item = document.createElement('div');
         item.classList.add('transaction-item', transaction.type);
