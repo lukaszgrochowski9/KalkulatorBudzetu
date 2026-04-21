@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label for="amount">Kwota (PLN)</label>
-                            <input type="number" id="amount" name="amount" step="0.01" placeholder="0.00" required>
+                            <input type="number" id="amount" name="amount" step="0.01" min="0.01" placeholder="0.00" required>
                         </div>
                         <div class="form-group">
                             <label for="category">Kategoria</label>
@@ -62,13 +62,20 @@
                         </div>
                         <div class="form-group">
                             <label for="date">Data</label>
-                            <input type="date" id="date" name="date" required value="2026-04-20">
+                            <input type="date" id="date" name="date" required>
                         </div>
                         <button type="submit" class="btn-submit">Dodaj transakcję</button>
                     </form>
                 </section>
                 <section class="list-section">
-                    <h2>Ostatnie transakcje</h2>
+                    <div class="list-header">
+                        <h2>Ostatnie transakcje</h2>
+                        <div class="filters">
+                            <button class="filter-btn active" data-filter="all">Wszystkie</button>
+                            <button class="filter-btn" data-filter="income">Przychody</button>
+                            <button class="filter-btn" data-filter="expense">Wydatki</button>
+                        </div>
+                    </div>
                     <div class="transactions-list">
                         <div class="transaction-item expense">
                             <div class="transaction-info">

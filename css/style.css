@@ -255,3 +255,46 @@ section h2 {
     padding: 2rem 0;
     font-style: italic;
 }
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.list-header h2 {
+    margin-bottom: 0;
+}
+
+.filters {
+    display: flex;
+    gap: 0.5rem;
+    background-color: var(--bg-color);
+    padding: 0.25rem;
+    border-radius: var(--radius-md);
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    color: var(--text-main);
+}
+
+.filter-btn.active {
+    background-color: var(--card-bg);
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}

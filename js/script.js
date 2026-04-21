@@ -9,8 +9,15 @@ const balanceDisplay = document.querySelector('.balance .amount');
 const incomesDisplay = document.querySelector('.incomes .amount');
 const expensesDisplay = document.querySelector('.expenses .amount');
 const transactionsList = document.querySelector('.transactions-list');
+const filterBtns = document.querySelectorAll('.filter-btn');
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+let currentFilter = 'all';
+
+function setDefaultDate() {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+}
 
 const categoryMap = {
     food: "Jedzenie",
@@ -55,10 +62,17 @@ function deleteTransaction(id) {
 function updateUI() {
     transactionsList.innerHTML = '';
 
+    let filteredTransactions = transactions;
+    if (currentFilter !== 'all') {
+        filteredTransactions = transactions.filter(t => t.type === currentFilter);
+    }
+
     if (transactions.length === 0) {
         transactionsList.innerHTML = '<p class="empty-state">Brak transakcji. Dodaj pierwszą transakcję powyżej.</p>';
+    } else if (filteredTransactions.length === 0) {
+        transactionsList.innerHTML = '<p class="empty-state">Brak transakcji dla wybranego filtru.</p>';
     } else {
-        const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sortedTransactions = [...filteredTransactions].sort((a, b) => new Date(b.date) - new Date(a.date));
         sortedTransactions.forEach(transaction => {
         const sign = transaction.type === 'expense' ? '-' : '+';
         const item = document.createElement('div');
@@ -103,7 +117,18 @@ form.addEventListener('submit', function(e) {
 
     transactions.push(transaction);
     form.reset();
+    setDefaultDate();
     updateUI();
 });
 
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        updateUI();
+    });
+});
+
+setDefaultDate();
 updateUI();
