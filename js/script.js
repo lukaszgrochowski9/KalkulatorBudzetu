@@ -19,7 +19,7 @@ let currentFilter = 'all';
 // Month navigation state
 const now = new Date();
 let currentMonth = now.getMonth();   // 0-11
-let currentYear  = now.getFullYear();
+let currentYear = now.getFullYear();
 
 const prevMonthBtn = document.getElementById('prev-month');
 const nextMonthBtn = document.getElementById('next-month');
@@ -115,29 +115,29 @@ function generateColors(count) {
 
 function updateChart() {
     if (!ctx) return;
-    
+
     const monthTransactions = getFilteredByMonth(transactions);
     const expenses = monthTransactions.filter(t => t.type === 'expense');
-    
+
     const dataByCategory = {};
     expenses.forEach(t => {
         const catName = categoryMap[t.category];
         dataByCategory[catName] = (dataByCategory[catName] || 0) + t.amount;
     });
-    
+
     const labels = Object.keys(dataByCategory);
     const data = Object.values(dataByCategory);
-    
+
     if (chartInstance) {
         chartInstance.destroy();
     }
-    
+
     if (expenses.length === 0) {
         return;
     }
-    
+
     const textColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#6b7280';
-    
+
     chartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -211,15 +211,15 @@ function updateUI() {
     } else {
         const sortedTransactions = [...filteredTransactions].sort((a, b) => new Date(b.date) - new Date(a.date));
         sortedTransactions.forEach(transaction => {
-        const sign = transaction.type === 'expense' ? '-' : '+';
-        const item = document.createElement('div');
-        item.classList.add('transaction-item', transaction.type);
+            const sign = transaction.type === 'expense' ? '-' : '+';
+            const item = document.createElement('div');
+            item.classList.add('transaction-item', transaction.type);
 
-        const dateObj = new Date(transaction.date);
-        const dateStr = new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
-        const amountStr = new Intl.NumberFormat('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(transaction.amount) + ' PLN';
+            const dateObj = new Date(transaction.date);
+            const dateStr = new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
+            const amountStr = new Intl.NumberFormat('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(transaction.amount) + ' PLN';
 
-        item.innerHTML = `
+            item.innerHTML = `
             <div class="transaction-info">
                 <h4>${transaction.name}</h4>
                 <span>${categoryMap[transaction.category]} • ${dateStr}</span>
@@ -232,7 +232,7 @@ function updateUI() {
             </div>
         `;
 
-        transactionsList.appendChild(item);
+            transactionsList.appendChild(item);
         });
     }
 
@@ -241,15 +241,15 @@ function updateUI() {
     localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     let finalCategory = categoryInput.value;
-    
+
     if (finalCategory === 'custom') {
         const newCatName = customCategoryInput.value.trim();
         if (!newCatName) return;
-        
+
         finalCategory = 'cat_' + Date.now();
         categoryMap[finalCategory] = newCatName;
         localStorage.setItem('categoryMap', JSON.stringify(categoryMap));
