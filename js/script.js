@@ -52,6 +52,8 @@ function updateChart() {
         return;
     }
     
+    const textColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#6b7280';
+    
     chartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -70,7 +72,7 @@ function updateChart() {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { font: { family: "'Inter', sans-serif" }, color: '#6b7280' }
+                    labels: { font: { family: "'Inter', sans-serif" }, color: textColor }
                 }
             }
         }
@@ -182,3 +184,25 @@ filterBtns.forEach(btn => {
 
 setDefaultDate();
 updateUI();
+
+// Dark Theme Logic
+const themeToggleBtn = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme');
+
+if (currentTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    themeToggleBtn.textContent = '☀️';
+}
+
+themeToggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+    let theme = 'light';
+    if (document.body.classList.contains('dark-theme')) {
+        theme = 'dark';
+        themeToggleBtn.textContent = '☀️';
+    } else {
+        themeToggleBtn.textContent = '🌙';
+    }
+    localStorage.setItem('theme', theme);
+    updateChart(); // refresh chart colors
+});

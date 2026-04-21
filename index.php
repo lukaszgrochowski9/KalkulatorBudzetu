@@ -11,6 +11,7 @@
 <body>
     <div class="app-container">
         <header class="app-header">
+            <button id="theme-toggle" class="theme-toggle-btn" title="Przełącz motyw">🌙</button>
             <h1>Kalkulator Budżetu</h1>
             <p>Zarządzaj swoimi finansami w prosty sposób</p>
         </header>
