@@ -21,6 +21,32 @@ const categoryMap = {
     other: "Inne"
 };
 
+function updateSummary() {
+    const incomes = transactions
+        .filter(t => t.type === 'income')
+        .reduce((acc, t) => acc + t.amount, 0);
+
+    const expenses = transactions
+        .filter(t => t.type === 'expense')
+        .reduce((acc, t) => acc + t.amount, 0);
+
+    const balance = incomes - expenses;
+
+    const formatAmount = (amount) => new Intl.NumberFormat('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount) + ' PLN';
+
+    balanceDisplay.textContent = formatAmount(balance);
+    incomesDisplay.textContent = formatAmount(incomes);
+    expensesDisplay.textContent = formatAmount(expenses);
+
+    if (balance >= 0) {
+        balanceDisplay.classList.add('positive');
+        balanceDisplay.classList.remove('negative');
+    } else {
+        balanceDisplay.classList.add('negative');
+        balanceDisplay.classList.remove('positive');
+    }
+}
+
 function updateUI() {
     transactionsList.innerHTML = '';
 
@@ -45,6 +71,8 @@ function updateUI() {
 
         transactionsList.appendChild(item);
     });
+
+    updateSummary();
 }
 
 form.addEventListener('submit', function(e) {
