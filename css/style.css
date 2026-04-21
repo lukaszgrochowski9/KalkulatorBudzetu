@@ -248,3 +248,10 @@ section h2 {
 .btn-delete:hover {
     background-color: #fee2e2;
 }
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem 0;
+    font-style: italic;
+}

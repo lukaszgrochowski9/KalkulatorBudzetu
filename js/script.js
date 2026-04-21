@@ -55,7 +55,10 @@ function deleteTransaction(id) {
 function updateUI() {
     transactionsList.innerHTML = '';
 
-    transactions.forEach(transaction => {
+    if (transactions.length === 0) {
+        transactionsList.innerHTML = '<p class="empty-state">Brak transakcji. Dodaj pierwszą transakcję powyżej.</p>';
+    } else {
+        transactions.forEach(transaction => {
         const sign = transaction.type === 'expense' ? '-' : '+';
         const item = document.createElement('div');
         item.classList.add('transaction-item', transaction.type);
@@ -78,7 +81,8 @@ function updateUI() {
         `;
 
         transactionsList.appendChild(item);
-    });
+        });
+    }
 
     updateSummary();
     localStorage.setItem('transactions', JSON.stringify(transactions));
