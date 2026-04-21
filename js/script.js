@@ -9,3 +9,9 @@ const balanceDisplay = document.querySelector('.balance .amount');
 const incomesDisplay = document.querySelector('.incomes .amount');
 const expensesDisplay = document.querySelector('.expenses .amount');
 const transactionsList = document.querySelector('.transactions-list');
+
+let transactions = [];
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+});
