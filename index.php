@@ -9,8 +9,62 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="app-container">
+    <!-- ═══════ PROFILE SELECTION OVERLAY ═══════ -->
+    <div id="profile-overlay" class="profile-overlay">
+        <div class="profile-overlay-content">
+            <div class="profile-overlay-header">
+                <h1 class="profile-overlay-title">Kalkulator Budżetu</h1>
+                <p class="profile-overlay-subtitle">Wybierz profil członka rodziny</p>
+            </div>
+            <div id="profile-grid" class="profile-grid">
+                <!-- Profile cards will be rendered here by JS -->
+            </div>
+            <button id="add-profile-btn" class="add-profile-btn">
+                <span class="add-profile-icon">＋</span>
+                <span>Dodaj członka rodziny</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══════ ADD PROFILE MODAL ═══════ -->
+    <div id="add-profile-modal" class="modal-backdrop" style="display:none;">
+        <div class="modal-card">
+            <h2>Nowy profil</h2>
+            <div class="form-group">
+                <label for="new-profile-name">Imię</label>
+                <input type="text" id="new-profile-name" placeholder="np. Mama" maxlength="20" required>
+            </div>
+            <div class="form-group">
+                <label>Wybierz avatar</label>
+                <div id="avatar-picker" class="avatar-picker">
+                    <!-- avatars rendered by JS -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="modal-cancel" class="btn-modal btn-modal-cancel">Anuluj</button>
+                <button id="modal-save" class="btn-modal btn-modal-save">Dodaj</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ DELETE PROFILE CONFIRM MODAL ═══════ -->
+    <div id="delete-profile-modal" class="modal-backdrop" style="display:none;">
+        <div class="modal-card">
+            <h2>Usuń profil</h2>
+            <p id="delete-profile-msg" style="margin: 1rem 0; color: var(--text-muted);">Czy na pewno chcesz usunąć ten profil? Wszystkie dane zostaną utracone.</p>
+            <div class="modal-actions">
+                <button id="delete-modal-cancel" class="btn-modal btn-modal-cancel">Anuluj</button>
+                <button id="delete-modal-confirm" class="btn-modal btn-modal-delete">Usuń</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-container" style="display:none;">
         <header class="app-header">
+            <button id="profile-switch-btn" class="profile-switch-btn" title="Zmień profil">
+                <span id="profile-switch-avatar" class="profile-switch-avatar">👤</span>
+                <span id="profile-switch-name" class="profile-switch-name">Profil</span>
+            </button>
             <button id="theme-toggle" class="theme-toggle-btn" title="Przełącz motyw">🌙</button>
             <h1>Kalkulator Budżetu</h1>
             <p>Zarządzaj swoimi finansami w prosty sposób</p>
@@ -125,6 +179,7 @@
             </div>
         </main>
     </div>
+    <script src="js/profiles.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

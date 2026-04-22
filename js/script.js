@@ -13,7 +13,7 @@ const filterBtns = document.querySelectorAll('.filter-btn');
 const ctx = document.getElementById('expensesChart');
 let chartInstance = null;
 
-let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+let transactions = [];
 let currentFilter = 'all';
 
 // Month navigation state
@@ -65,7 +65,7 @@ function setDefaultDate() {
     dateInput.value = today;
 }
 
-let categoryMap = JSON.parse(localStorage.getItem('categoryMap')) || {
+const defaultCategoryMap = {
     food: "Jedzenie",
     transport: "Transport",
     housing: "Mieszkanie",
@@ -73,8 +73,36 @@ let categoryMap = JSON.parse(localStorage.getItem('categoryMap')) || {
     salary: "Wynagrodzenie"
 };
 
-delete categoryMap.other;
-localStorage.setItem('categoryMap', JSON.stringify(categoryMap));
+let categoryMap = { ...defaultCategoryMap };
+
+function loadProfileData() {
+    const profileId = ProfileManager.getActiveProfileId();
+    if (!profileId) return;
+
+    const txKey = ProfileManager.getTransactionsKey(profileId);
+    const catKey = ProfileManager.getCategoryMapKey(profileId);
+
+    transactions = JSON.parse(localStorage.getItem(txKey)) || [];
+
+    const savedCats = JSON.parse(localStorage.getItem(catKey));
+    if (savedCats) {
+        categoryMap = savedCats;
+    } else {
+        categoryMap = { ...defaultCategoryMap };
+    }
+    delete categoryMap.other;
+}
+
+function saveProfileData() {
+    const profileId = ProfileManager.getActiveProfileId();
+    if (!profileId) return;
+
+    const txKey = ProfileManager.getTransactionsKey(profileId);
+    const catKey = ProfileManager.getCategoryMapKey(profileId);
+
+    localStorage.setItem(txKey, JSON.stringify(transactions));
+    localStorage.setItem(catKey, JSON.stringify(categoryMap));
+}
 
 function populateCategories() {
     categoryInput.innerHTML = '';
@@ -90,8 +118,6 @@ function populateCategories() {
     customOption.style.fontWeight = 'bold';
     categoryInput.appendChild(customOption);
 }
-
-populateCategories();
 
 categoryInput.addEventListener('change', (e) => {
     if (e.target.value === 'custom') {
@@ -219,10 +245,15 @@ function updateUI() {
             const dateStr = new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
             const amountStr = new Intl.NumberFormat('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(transaction.amount) + ' PLN';
 
+            const authorBadge = transaction.profileName
+                ? `<span class="transaction-author">${transaction.profileAvatar || '👤'} ${transaction.profileName}</span>`
+                : '';
+
             item.innerHTML = `
             <div class="transaction-info">
                 <h4>${transaction.name}</h4>
                 <span>${categoryMap[transaction.category]} • ${dateStr}</span>
+                ${authorBadge}
             </div>
             <div class="transaction-actions">
                 <div class="transaction-amount">
@@ -238,7 +269,7 @@ function updateUI() {
 
     updateSummary();
     updateChart();
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    saveProfileData();
 }
 
 form.addEventListener('submit', function (e) {
@@ -252,17 +283,20 @@ form.addEventListener('submit', function (e) {
 
         finalCategory = 'cat_' + Date.now();
         categoryMap[finalCategory] = newCatName;
-        localStorage.setItem('categoryMap', JSON.stringify(categoryMap));
+        saveProfileData();
         populateCategories();
     }
 
+    const activeProfile = ProfileManager.getActiveProfile();
     const transaction = {
         id: crypto.randomUUID(),
         type: typeInput.value,
         name: nameInput.value,
         amount: parseFloat(amountInput.value),
         category: finalCategory,
-        date: dateInput.value
+        date: dateInput.value,
+        profileName: activeProfile ? activeProfile.name : '',
+        profileAvatar: activeProfile ? activeProfile.avatar : ''
     };
 
     transactions.push(transaction);
@@ -283,7 +317,18 @@ filterBtns.forEach(btn => {
 });
 
 setDefaultDate();
-updateUI();
+
+// ═══════ PROFILE INTEGRATION ═══════
+
+window.onProfileSelected = function(profile) {
+    loadProfileData();
+    populateCategories();
+    currentFilter = 'all';
+    filterBtns.forEach(b => b.classList.remove('active'));
+    filterBtns[0].classList.add('active');
+    updateMonthDisplay();
+    updateUI();
+};
 
 // Dark Theme Logic
 const themeToggleBtn = document.getElementById('theme-toggle');
@@ -306,3 +351,4 @@ themeToggleBtn.addEventListener('click', () => {
     localStorage.setItem('theme', theme);
     updateChart(); // refresh chart colors
 });
+
