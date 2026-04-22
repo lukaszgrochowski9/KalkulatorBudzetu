@@ -725,6 +725,7 @@ body.dark-theme .btn-delete:hover {
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
     border: 1px solid var(--border-color);
     animation: modalSlideUp 0.3s ease;
+    overflow: hidden;
 }
 
 @keyframes modalSlideUp {
@@ -802,15 +803,16 @@ body.dark-theme .btn-delete:hover {
 
 .avatar-picker {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 0.5rem;
     margin-top: 0.5rem;
+    overflow: hidden;
 }
 
 .avatar-option {
-    font-size: 1.7rem;
-    width: 44px;
-    height: 44px;
+    font-size: 1.5rem;
+    width: 100%;
+    aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -819,6 +821,9 @@ body.dark-theme .btn-delete:hover {
     background: var(--input-bg);
     cursor: pointer;
     transition: all 0.2s ease;
+    box-sizing: border-box;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .avatar-option:hover {
@@ -912,7 +917,7 @@ body.dark-theme .btn-delete:hover {
     }
 
     .avatar-picker {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(5, 1fr);
     }
 
     .profile-switch-name {
